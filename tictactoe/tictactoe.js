@@ -1,12 +1,87 @@
 let currentPlayer = "X";
 let gameStatus = ""; // "" - continue game, "Tie", "X Wins", "O Wins"
 let numTurns = 0;
+let idNames = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
+let playerLastClicked = "";
+// reset board and all variables
+function newGame(){
+	//reset board
+	for(var i = 0; i < idNames.length; i++){
+		document.getElementById(idNames[i]).innerHTML = "";
+	}//for
+
+	numTurns = 0;
+	gameStatus = "";
+	currentPlayer = "X";
+
+	changeVisibility("controls");
+
+
+}//newGame
+
+//randomly chooses a free box for computer
+function computerTakeTurn(){
+	
+	let idName = "";
+
+	//improves computer intelligence
+	if(playerLastClicked == "one"){
+		document.getElementById("two").innerHTML = currentPlayer;
+
+	
+
+	}else if(playerLastClicked == "four"){
+		document.getElementById("six").innerHTML = currentPlayer;
+		
+		
+	
+	}else if(playerLastClicked == "five"){
+		document.getElementById("nine").innerHTML = currentPlayer;
+		
+
+	}else if(playerLastClicked == "six"){
+		document.getElementById("four").innerHTML = currentPlayer;
+	}else {
+	// choose random boxes until empty box is found
+	do{
+		let rand = parseInt(Math.random()*9) + 1; // 1-9
+		idName = idNames[rand-1];
+
+		//check if chosen box is empty
+		if(document.getElementById(idName).innerHTML == ""){
+			document.getElementById(idName).innerHTML = currentPlayer;
+			break;
+		}
+
+		
+
+
+	}while(true);
+
+
+}//else
+} //computerTakeTurn
+
+
+
 
 // take player turn
 function playerTakeTurn(e){
+
 	if(e.innerHTML == ""){
 		e.innerHTML = currentPlayer;
+		playerLastClicked = e.id;
 		checkGameStatus();
+
+		// if game not over, computer goes
+		if(gameStatus == ""){
+			setTimeout(function(){
+				computerTakeTurn();
+				checkGameStatus();
+
+				}, 500
+			);
+		}//if
 	}else{
 		showLightBox("This box is already selected. ", "Please select another.");
 		
@@ -14,11 +89,7 @@ function playerTakeTurn(e){
 	}//else
 
 
-	//game is over
-	if (gameStatus != ""){
-		showLightBox(gameStatus, "Game Over!");
-		
-	}
+	
 } //playerTakeTurn
 
 //after each turn, check for winner, tie, or continue
@@ -29,7 +100,7 @@ function checkGameStatus(){
 	//check Win
 	if (checkWin()) {
 		gameStatus = currentPlayer + " wins!";
-		return;
+		
 	}//if
 
 	//check for tie
@@ -40,6 +111,12 @@ function checkGameStatus(){
 
 	//switch current player
 	currentPlayer = (currentPlayer == "X" ? "O" : "X");
+
+	//game is over
+	if (gameStatus != ""){
+		setTimeout(function() {showLightBox(gameStatus, "Game Over!");},500);
+		
+	}
 }//checkGameStatus
 
 //check for a Win, there are 8 win paths
@@ -56,38 +133,48 @@ function checkWin () {
 	cb[8] = document.getElementById("eight").innerHTML;
 	cb[9] = document.getElementById("nine").innerHTML;
 
+	console.log("first row: " + cb[1] + " " + cb[2] + " " + cb[3] + " ");
+
 
 
 	//top row win
 	if (cb[1] != "" && cb[1] == cb[2] && cb[2] == cb[3]){
+		console.log("returning true"); 
 		return true;
 	}//if
 
 	if (cb[4] != "" && cb[4] == cb[5] && cb[5] == cb[6]){
+		console.log("returning true"); 
 		return true;
 	}//if
 
 	if (cb[7] != "" && cb[7] == cb[8] && cb[8] == cb[9]){
+		console.log("returning true"); 
 		return true;
 	}//if
 
 	if (cb[1] != "" && cb[1] == cb[4] && cb[4] == cb[7]){
+		console.log("returning true"); 
 		return true;
 	}//if
 
 	if (cb[2] != "" && cb[2] == cb[5] && cb[5] == cb[8]){
+		console.log("returning true"); 
 		return true;
 	}//if
 
 	if (cb[3] != "" && cb[3] == cb[6] && cb[6] == cb[9]){
+		console.log("returning true"); 
 		return true;
 	}//if
 
 	if (cb[1] != "" && cb[1] == cb[5] && cb[5] == cb[9]){
+		console.log("returning true"); 
 		return true;
 	}//if
 
 	if (cb[3] != "" && cb[3] == cb[5] && cb[5] == cb[7]){
+		console.log("returning true"); 
 		return true;
 	}//if
 
@@ -128,8 +215,12 @@ function continueGame(){
 	changeVisibility("boundaryMessage");
 
 	// if game is over, show controls
+	if (gameStatus != ""){
+		changeVisibility("controls");
+	}
 
 }// continueGame
+
 
 
 
