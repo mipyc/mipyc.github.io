@@ -105,11 +105,12 @@ const levels = [
 	 	if (!riderOn && nextClass.includes("fence")) { return; }
 
 	 	// if there is a fence, move two spaces with animation
-	 	if (newClass.includes("fence")) {
+	 	if (nextClass.includes("fence")) {
 
 	 		// rider must be on to jump
 	 		if (riderOn) {
 	 			gridBoxes[currentLocationOfHorse].className = "";
+	 			oldClassName = gridBoxes[nextLocation].className;
 
 	 			// set values according to direction
 	 			if (direction == "left"){
