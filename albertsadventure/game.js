@@ -1,3 +1,23 @@
+document.getElementById("clickme").addEventListener("click", function() {
+  document.getElementById("lightbox").className = "open";
+});
+
+document.getElementById("close").addEventListener("click", function() {
+  document.getElementById("lightbox").className = "";
+});
+
+document.getElementById("lightbox").addEventListener("click", function(e) {
+  if (e.target.id == "lightbox") {
+    document.getElementById("lightbox").className = "";
+  }
+});
+
+document.getElementById("startbutton").addEventListener("click", function() {
+  document.getElementById("lightbox").className = "open";
+});
+
+
+
 const levels = [	
 	//level 0 
 	["flag", "rock", "", "", "",
@@ -30,6 +50,9 @@ const levels = [
 	 var currentLocationOfHorse = 0;
 	 var currentAnimation; //allows 1 animation per level
 	 var widthOfBoard = 5;
+
+
+
 
 	 //start game
 	 window.addEventListener("load", function() {
@@ -195,6 +218,8 @@ const levels = [
 
 	 } // tryToMove
 
+
+
 	 // move up a level
 	 function levelUp(nextClass){
 	 	if (nextClass == "flag" && riderOn){
@@ -203,6 +228,11 @@ const levels = [
 	 		setTimeout (function(){
 	 			document.getElementById("levelup").style.display = "none";
 	 			//should have if statement for if there is no more levels
+	 			if (currentLevel == 3){
+	 				document.getElementById("gameover").style.display = "block";
+	 				clearTimeout(currentAnimation);
+
+	 			}
 	 			currentLevel++;
 	 			loadLevel();
 
