@@ -1,22 +1,3 @@
-document.getElementById("clickme").addEventListener("click", function() {
-  document.getElementById("lightbox").className = "open";
-});
-
-document.getElementById("close").addEventListener("click", function() {
-  document.getElementById("lightbox").className = "";
-});
-
-document.getElementById("lightbox").addEventListener("click", function(e) {
-  if (e.target.id == "lightbox") {
-    document.getElementById("lightbox").className = "";
-  }
-});
-
-document.getElementById("startbutton").addEventListener("click", function() {
-  document.getElementById("lightbox").className = "open";
-});
-
-
 
 const levels = [	
 	//level 0 
@@ -50,7 +31,6 @@ const levels = [
 	 var currentLocationOfHorse = 0;
 	 var currentAnimation; //allows 1 animation per level
 	 var widthOfBoard = 5;
-
 
 
 
@@ -172,10 +152,12 @@ const levels = [
 
 	 				// if next box is flag, go up a level
 	 				levelUp(nextClass);
+
+	 				}, 350);
 	 				return; 
 
 
-	 			}, 350);
+	 			
 	 		} // if riderOn
 	 	} // if class has fence
 
@@ -208,7 +190,7 @@ const levels = [
 
 	 	// if it is an enemy
 	 	if (nextClass.includes("enemy")){
-	 		document.getElementById("lose").style.display = "block";
+	 		location.replace("lose.html");
 	 		return;
 	 	}
 
@@ -218,25 +200,31 @@ const levels = [
 
 	 } // tryToMove
 
-
+		function stopGame(){
+	 	location.replace("win.html");
+	 		}
 
 	 // move up a level
 	 function levelUp(nextClass){
 	 	if (nextClass == "flag" && riderOn){
-	 		document.getElementById("levelup").style.display = "block";
-	 		clearTimeout(currentAnimation);
-	 		setTimeout (function(){
-	 			document.getElementById("levelup").style.display = "none";
-	 			//should have if statement for if there is no more levels
-	 			if (currentLevel == 3){
-	 				document.getElementById("gameover").style.display = "block";
-	 				clearTimeout(currentAnimation);
 
-	 			}
+	 		if(currentLevel < 2){
+	 			document.getElementById("levelup").style.display = "block";
+	 			clearTimeout(currentAnimation);
 	 			currentLevel++;
-	 			loadLevel();
 
-	 		}, 1000);
+	 			setTimeout (function(){
+	 			document.getElementById("levelup").style.display = "none";
+
+	 			}, 1000);
+
+	 			loadLevel();
+	 		}else {
+	 			location.replace("win.html");
+	 		}
+	 				
+
+	 		
 	 	}
 	 } // levelUp
 
@@ -307,7 +295,3 @@ const levels = [
 	 		animateEnemy(boxes, index, direction);
 	 	}, 750);
 	 }// animateEnemy
-
-
-
-
